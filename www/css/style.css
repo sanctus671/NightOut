@@ -1,1 +1,52 @@
-/* Empty. Add your own CSS if you like */
+.center-tab{
+   background-image: url('../img/circle.svg');
+    background-repeat: no-repeat;
+
+    background-position: center; 
+    background-size: 100px;
+    height:225px;
+    margin-top:-100px;
+    opacity:1 !important;
+    
+
+}
+
+.center-tab .icon{
+    font-size: 65px;
+    margin-top: 80px;
+    margin-left:5px;
+}
+
+.center-tab .ion-ios7-search{
+    color:grey;
+}
+.center-tab .ion-ios7-search-strong{
+    color:#f8f8f8;
+}
+
+.pull-right{
+  float: right;
+}
+.button-halfwidth{
+  width: 49%;
+}
+.button-fullwidth{
+  width: 100%;
+}
+
+.bar-light.bar-header{
+    height:50px;
+    background-color: grey;
+}
+.bar .title{
+    height:50px;
+}
+
+.hidden.tab-item{
+    display:none;
+}
+
+
+
+
+

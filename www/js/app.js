@@ -38,7 +38,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   // Each tab has its own nav history stack:
 
-  .state('tab.dash', {
+  .state('dash', {
     url: '/dash',
     views: {
       'tab-dash': {
@@ -48,7 +48,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
-  .state('tab.chats', {
+  .state('chats', {
       url: '/chats',
       views: {
         'tab-chats': {
@@ -57,7 +57,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
-    .state('tab.chat-detail', {
+    .state('chat-detail', {
       url: '/chats/:chatId',
       views: {
         'tab-chats': {
@@ -67,26 +67,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-  .state('tab.friends', {
+  .state('friends', {
       url: '/friends',
       views: {
-        'tab-friends': {
+        'tab-test': {
           templateUrl: 'templates/tab-friends.html',
           controller: 'FriendsCtrl'
         }
       }
     })
-    .state('tab.friend-detail', {
+    .state('friend-detail', {
       url: '/friend/:friendId',
       views: {
-        'tab-friends': {
+        'tab-test': {
           templateUrl: 'templates/friend-detail.html',
           controller: 'FriendDetailCtrl'
         }
       }
     })
 
-  .state('tab.account', {
+  .state('account', {
     url: '/account',
     views: {
       'tab-account': {
@@ -94,9 +94,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         controller: 'AccountCtrl'
       }
     }
-  });
+  })
+  
+  .state('test', {
+    url: '/test',
+    views: {
+      'tab-test': {
+        templateUrl: 'templates/test.html',
+        controller: 'AccountCtrl'
+      }
+    }
+  })  
+  
+
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/dash');
 
 });
