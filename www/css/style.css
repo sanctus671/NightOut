@@ -1,5 +1,29 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900);
+
+html{
+    font-family:lato;
+}
+
+.tab-title{
+    font-family:lato;
+}
+
+.tab-item{
+    font-family:lato;
+}
+
+h1,h2,h3,h4,h5,h6{
+    font-family:lato;
+    
+}
+
+.item{
+    font-family:lato;
+
+}
+
 .center-tab{
-   background-image: url('../img/circle.svg');
+   background-image: url('../img/circle.png');
     background-repeat: no-repeat;
 
     background-position: center; 
@@ -9,6 +33,10 @@
     opacity:1 !important;
     
 
+}
+
+.center-tab.tab-item-active{
+    background-image: url('../img/circle2.png');
 }
 
 .center-tab .icon{
@@ -34,17 +62,42 @@
   width: 100%;
 }
 
-.bar-light.bar-header{
+.bar-dark.bar-header{
     height:50px;
-    background-color: grey;
+    background-color: black;
 }
 .bar .title{
     height:50px;
+    font-family:lato;
+    font-weight:100;
+    font-size:40px;
+}
+
+.has-header{
+    top:50px;
 }
 
 .hidden.tab-item{
     display:none;
 }
+
+.tabs{
+    background-color:white;
+    border-color:black;
+    color:black;
+
+}
+
+.button.uber-icon{
+     background-image: url('../img/uber.png') !important;
+    background-repeat: no-repeat !important;
+
+    background-position: center !important; 
+    background-size: 35px !important; 
+    width:35px;
+}
+
+
 
 
 

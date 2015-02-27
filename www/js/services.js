@@ -1,10 +1,10 @@
 angular.module('starter.services', [])
 
-.factory('Chats', function() {
+.factory('feed', function() {
   // Might use a resource here that returns a JSON array
 
   // Some fake testing data
-  var chats = [{
+  var data = [{
     id: 0,
     name: 'Ben Sparrow',
     lastText: 'You on your way?',
@@ -33,20 +33,36 @@ angular.module('starter.services', [])
 
   return {
     all: function() {
-      return chats;
+      return data.sort(function(a, b){
+                var keyA = a.id,
+                keyB = b.id;
+                // Compare the 2 dates
+                if(keyA < keyB) return 1;
+                if(keyA > keyB) return -1;
+                return 0;
+        });
+    },
+    insert: function(newData){
+      var index = data.length;
+      data.push({
+          id: index,
+          name: newData.name,
+          lastText: newData.lastText,
+          face: newData.face
+      })
     },
     remove: function(chat) {
-      chats.splice(chats.indexOf(chat), 1);
+      data.splice(data.indexOf(chat), 1);
     },
     get: function(chatId) {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].id === parseInt(chatId)) {
-          return chats[i];
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].id === parseInt(chatId)) {
+          return data[i];
         }
       }
       return null;
-    }
-  }
+    }    
+  };
 })
 
 /**

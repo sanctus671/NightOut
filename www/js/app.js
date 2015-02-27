@@ -21,94 +21,108 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
-
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+    $ionicConfigProvider.platform.android.views.transition('ios')
+    $ionicConfigProvider.platform.android.tabs.style('standard');
+    $ionicConfigProvider.platform.android.tabs.position('bottom');
+    $ionicConfigProvider.platform.android.navBar.alignTitle('center');
+    
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-  // setup an abstract state for the tabs directive
-    .state('tab', {
-    url: "/tab",
-    abstract: true,
-    templateUrl: "templates/tabs.html"
-  })
+
 
   // Each tab has its own nav history stack:
 
-  .state('dash', {
-    url: '/dash',
+  .state('home', {
+    url: '/home',
     views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
+      'home': {
+        templateUrl: 'templates/home.html',
+        controller: 'HomeCtrl'
       }
     }
   })
 
-  .state('chats', {
-      url: '/chats',
+  .state('search', {
+      url: '/search',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
+        'search': {
+          templateUrl: 'templates/search.html',
+          controller: 'SearchCtrl'
         }
       }
     })
-    .state('chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })
-
-  .state('friends', {
-      url: '/friends',
-      views: {
-        'tab-test': {
-          templateUrl: 'templates/tab-friends.html',
-          controller: 'FriendsCtrl'
-        }
-      }
-    })
-    .state('friend-detail', {
-      url: '/friend/:friendId',
-      views: {
-        'tab-test': {
-          templateUrl: 'templates/friend-detail.html',
-          controller: 'FriendDetailCtrl'
-        }
-      }
-    })
-
-  .state('account', {
-    url: '/account',
+    
+  .state('profile', {
+    url: '/profile/:profileId',
     views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
+      'other': {
+        templateUrl: 'templates/profile.html',
+        controller: 'ProfileCtrl'
+      }
+    }
+  })     
+    
+  .state('coupons', {
+      url: '/coupons',
+      views: {
+        'coupons': {
+          templateUrl: 'templates/coupons.html',
+          controller: 'CouponsCtrl'
+        }
+      }
+    })
+    
+  .state('coupons-detail', {
+      url: '/coupons/:couponId',
+      views: {
+        'coupons': {
+          templateUrl: 'templates/coupons-detail.html',
+          controller: 'CouponsDetailCtrl'
+        }
+      }
+    })    
+    
+
+
+  .state('location', {
+    url: '/location',
+    views: {
+      'other': {
+        templateUrl: 'templates/location.html',
+        controller: 'LocationCtrl'
       }
     }
   })
   
-  .state('test', {
-    url: '/test',
+  .state('account', {
+    url: '/account',
     views: {
-      'tab-test': {
-        templateUrl: 'templates/test.html',
+      'other': {
+        templateUrl: 'templates/account.html',
         controller: 'AccountCtrl'
       }
     }
   })  
   
+  .state('settings', {
+    url: '/settings',
+    views: {
+      'other': {
+        templateUrl: 'templates/settings.html',
+        controller: 'SettingsCtrl'
+      }
+    }
+  }) 
+    
+  
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/dash');
+  $urlRouterProvider.otherwise('/home');
 
 });

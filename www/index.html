@@ -27,65 +27,79 @@
     <!--
       The nav bar that will be updated as we navigate between views.
     -->
-     <ion-side-menus>
+    <ion-side-menus>
         <!-- Center content -->
         <ion-side-menu-content ng-controller="NavCtrl">
-            <ion-nav-bar class="bar-light">
+            
+            <ion-nav-bar class="bar-dark">
+                
+                
                 <ion-nav-back-button>
                     Back
                 </ion-nav-back-button>
+                
+                
                 <ion-nav-buttons side="left">
-                    <button class="button button-icon button-clear ion-navicon" ng-click="toggleLeft()">
+                    <button class="button button-icon button-clear ion-navicon" ng-click="toggleLeft()" style="margin-top: 2px;">
                     </button>
                 </ion-nav-buttons>
+                
+                
+                <ion-nav-buttons side="right" >
+                    <button ng-controller="ModalCtrl" class="button button-icon button-clear uber-icon" ng-click="modal.show()" style="margin-top: 2px;">
+                    </button>
+                </ion-nav-buttons>  
+                
+                
             </ion-nav-bar>
-<ion-tabs class="tabs-icon-top ">
+        <ion-tabs class="tabs-icon-top ">
     
-    
-<ion-tab class="hidden" title="" icon-off="" icon-on="" href="#/test">
-    <ion-nav-view name="tab-test"></ion-nav-view>
-  </ion-tab>
+            <!-- Tabs not shown in main tab menu -->   
 
-  <!-- Dashboard Tab -->
-  <ion-tab title="Home" icon-off="ion-ios7-home-outline" icon-on="ion-ios7-home" href="#/dash">
-    <ion-nav-view name="tab-dash"></ion-nav-view>
-  </ion-tab>
-
-
+            <ion-tab class="hidden" title="" icon-off="" icon-on="" href="#">
+                <ion-nav-view name="other"></ion-nav-view>
+            </ion-tab>
 
   
-  <!-- Chats Tab -->
   
-  <ion-tab class="center-tab" title="" icon-off="ion-ios7-search" icon-on="ion-ios7-search-strong" href="#/chats" >
-      <ion-nav-view name="tab-chats"></ion-nav-view>
-  </ion-tab>
-
-<!--   Friends Tab 
-  <ion-tab title="Friends" icon-off="ion-ios7-heart-outline" icon-on="ion-ios7-heart" href="#/tab/friends">
-    <ion-nav-view name="tab-friends"></ion-nav-view>
-  </ion-tab>-->
-
+            <!-- Main tabs -->   
   
 
-  <!-- Account Tab -->
-  <ion-tab title="Tickets" icon-off="ion-social-usd-outline" icon-on="ion-social-usd" href="#/account">
-    <ion-nav-view name="tab-account"></ion-nav-view>
-  </ion-tab>
+            <!-- Home Tab -->
+            <ion-tab title="Home" icon-off="ion-ios7-home-outline" icon-on="ion-ios7-home" href="#/home">
+                <ion-nav-view name="home"></ion-nav-view>
+            </ion-tab>
 
 
-</ion-tabs>
+
+
+            <!-- Search Tab -->
+            <ion-tab class="center-tab" title="" icon-off="" icon-on="" href="#/search" >
+                <ion-nav-view name="search"></ion-nav-view>
+            </ion-tab>
+
+
+          <!-- Coupons Tab -->
+            <ion-tab title="Coupons" icon-off="ion-ios7-pricetags-outline" icon-on="ion-ios7-pricetags" href="#/coupons">
+                <ion-nav-view name="coupons"></ion-nav-view>
+            </ion-tab>
+
+
+        </ion-tabs>
+            
+            
         </ion-side-menu-content>
         <!-- Left menu -->
         <ion-side-menu side="left">
-            <ion-header-bar class="bar-assertive">
+            <ion-header-bar class="bar-dark">
                 <h1 class="title">Settings</h1>
             </ion-header-bar>
             <ion-content>
                 <ul class="list">
                     <!-- Note each link has the 'menu-close' attribute so the menu auto closes when clicking on one of these links -->
-                    <a href="#/friends" class="item" menu-close>Menu 1</a>
-                    <a href="#/tab/chats" class="item" menu-close>Menu 2</a>
-                    <a href="#/tab/account" class="item" menu-close>Menu 3</a>
+                    <a href="#/location" class="item" menu-close>Location</a>
+                    <a href="#/account" class="item" menu-close>Account</a>
+                    <a href="#/settings" class="item" menu-close>Settings</a>
                 </ul>
             </ion-content>
         </ion-side-menu>
