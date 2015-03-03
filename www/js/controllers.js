@@ -1,6 +1,7 @@
 angular.module('starter.controllers', [])
 
 .controller('HomeCtrl', function($scope, feed) {
+
     $scope.feed = feed.all();
     
     $scope.refresh = function(){
@@ -17,6 +18,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('SearchCtrl', function($scope) {
+  
   $scope.settings = {
     enableFriends: true
   }
@@ -24,7 +26,9 @@ angular.module('starter.controllers', [])
   
   
 .controller('ProfileCtrl', function($scope, $stateParams, feed) {
+   
   $scope.chat = feed.get($stateParams.chatId);
+  
 })
 
 
@@ -39,12 +43,13 @@ angular.module('starter.controllers', [])
 })
 
 .controller('CouponsDetailCtrl', function($scope, $stateParams, feed) {
-  
+
   $scope.chat = feed.get($stateParams.chatId);
 })
 
 
 .controller('LocationCtrl', function($scope) {
+  
   $scope.settings = {
     enableFriends: true
   }
@@ -52,7 +57,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('AccountCtrl', function($scope) {
-  $scope.settings = {
+  turnOnCamera();  $scope.settings = {
     enableFriends: true
   }
   })

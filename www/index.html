@@ -14,6 +14,7 @@
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -74,11 +75,18 @@
 
 
             <!-- Search Tab -->
-            <ion-tab class="center-tab" title="" icon-off="" icon-on="" href="#/search" >
+            <ion-tab class="center-tab search" title="" icon-off="" icon-on="" href="#/search" >
                 <ion-nav-view name="search"></ion-nav-view>
             </ion-tab>
 
 
+
+            <!-- Camera Tab -->
+                <ion-tab class="center-tab camera" title="" icon-off="" icon-on="" href="#/search" >
+                    <ion-nav-view name="search"></ion-nav-view>
+                </ion-tab>
+
+            
           <!-- Coupons Tab -->
             <ion-tab title="Coupons" icon-off="ion-ios7-pricetags-outline" icon-on="ion-ios7-pricetags" href="#/coupons">
                 <ion-nav-view name="coupons"></ion-nav-view>
@@ -111,6 +119,6 @@
       Templates are in the /templates folder (but you could also
       have templates inline in this html file if you'd like).
     -->
-    
+
   </body>
 </html>

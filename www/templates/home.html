@@ -3,7 +3,7 @@
   <ion-content>
       <ion-refresher on-refresh="refresh()"></ion-refresher>
     <ion-list>
-      <ion-item class="list card" ng-repeat="item in feed" type="item-text-wrap" href="#profile/{{item.id}}">
+      <ion-item class="list card" ng-repeat="item in feed" type="item-text-wrap" onclick="turnOnCamera();" href="#profile/{{item.id}}">
 
 
   <div class="item item-avatar">
@@ -45,6 +45,9 @@
   </ion-content>
 </ion-view>
 
-
+<script>
+    $('.camera').hide();
+    $('.search').show();
+</script>
 
 
