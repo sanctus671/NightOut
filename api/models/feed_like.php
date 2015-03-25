@@ -34,8 +34,8 @@ class feedLikeModel
     
     public function delete()
     {
-        if (!isset($this->id)){$this->app->errorJSON($this->app, "No ID was selected to delete");}
-        $this->app->db->delete("feed_likes", ["id" => $this->id]);
+        if (!isset($this->feedid)){$this->app->errorJSON($this->app, "No ID was selected to delete");}
+        $this->app->db->delete("feed_likes", ["feedid" => $this->feedid]);
  
     }    
     

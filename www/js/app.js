@@ -5,9 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('main', ['ionic', 'main.controllers', 'main.services', 'monospaced.elastic', 'ngCordova'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope) {
+  $rootScope.endPoint = 'http://nightout.local/api/index.php';    
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -34,8 +35,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   $stateProvider
 
 
+  .state('login', {
+    url: '/login',
+          templateUrl: 'templates/login.html',
+          controller: 'LoginCtrl'
+  })
 
-  // Each tab has its own nav history stack:
+
 
   .state('home', {
     url: '/home',
@@ -123,6 +129,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise('/login');
 
 });
+

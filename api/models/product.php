@@ -17,13 +17,15 @@ class productModel
     
     public function __construct ($app)
     {
-        if (!isset($_SESSION['profileid'])){$app->errorJSON($app, "Not authenticated as business user");}
-        $this->profileid = $_SESSION['profileid'];
+        if (!isset($_SESSION['userid'])){$app->errorJSON($app, "Not authenticated");}
         $this->app = $app;
     }    
     
     public function save()
     {
+        if (!isset($_SESSION['profileid'])){$this->app->errorJSON($this->app, "Not authenticated as business user");}
+        $this->profileid = $_SESSION['profileid'];    
+        
         if (!isset($this->name) || !isset($this->price)){$this->app->errorJSON($this->app, "Required fields were not set");}
        
         unset($this->id);
@@ -33,6 +35,9 @@ class productModel
     
     public function update()
     {
+        if (!isset($_SESSION['profileid'])){$this->app->errorJSON($this->app, "Not authenticated as business user");}
+        $this->profileid = $_SESSION['profileid'];       
+        
         if (!isset($this->id)){$this->app->errorJSON($this->app, "No ID was selected to update");}
         $this->app->db->update("products", $this->toArray(), ["id" => $this->id]);
     }    
@@ -40,6 +45,9 @@ class productModel
     
     public function delete()
     {
+        if (!isset($_SESSION['profileid'])){$this->app->errorJSON($this->app, "Not authenticated as business user");}
+        $this->profileid = $_SESSION['profileid'];   
+        
         if (!isset($this->id)){$this->app->errorJSON($this->app, "No ID was selected to delete");}
         $this->app->db->delete("products", ["id" => $this->id]);
  
@@ -47,6 +55,9 @@ class productModel
     
     public function get()
     {
+        if (isset($this->profileid)){
+             return $this->app->db->select("products", "*", ["profileid" => $this->profileid]); 
+        }
         if (!isset($this->id)){$this->app->errorJSON($this->app, "No ID was selected to get");}
         return $this->app->db->select("products", "*", ["id" => $this->id]); 
     } 

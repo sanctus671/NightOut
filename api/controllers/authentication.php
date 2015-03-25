@@ -16,13 +16,29 @@ class authenticationController
 
 
         $_SESSION["userid"] = "Not a real session";
-
+        
+        
+        //check login as user
         $model = new userModel($this->app);
         $model->username = $username;
         $userid = $model->authenticate($password);
         if ($userid){
             $_SESSION["userid"] = $userid;
+            
+            //check if user is bussiness user
+            
+            $profileModel = new profileModel($this->app);
+            $profileModel->userid = $userid;
+            $profile = $profileModel->get();
+            
+            if (count($profile)){
+                $_SESSION["profileid"] = $profile[0]["id"];
+            }
+            
             $this->app->outputJSON($this->app, "Logged in");
+            
+            
+            
         }
         
     }
@@ -39,29 +55,8 @@ class authenticationController
         
     }    
     
-    
-    public function register()
-    {
-        if (isset($_SESSION["userid"])){$this->app->errorJSON($this->app, "Already logged in");}
-
-        $_SESSION["userid"] = "Not a real session";
-
-        $model = new userModel($this->app);
-
-
-        $model->username = $this->app->request->post("username");
-        $model->email = $this->app->request->post("email");
-
-        $model->save($this->app->request->post("password"));
-        
-        $this->login($this->app->request->post("username"), $this->app->request->post("password"));
-        
-        $this->app->outputJSON($this->app, "User registered");
-        
-        
-        
-
-    }  
+  
+   
     
 }
     

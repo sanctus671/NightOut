@@ -16,21 +16,30 @@
     <script src="lib/ionic/js/ionic.bundle.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
+    <!-- custom directives --> 
+    <script src="lib/directives/elastic.js"></script>
+    <script src="lib/directives/ng-cordova.min.js"></script>
+    
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
+
+    
     <!-- your app's js -->
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
+    
+    
   </head>
-  <body ng-app="starter">
+  <body ng-app="main">
+    <ion-nav-view></ion-nav-view>     
     <!--
       The nav bar that will be updated as we navigate between views.
     -->
-    <ion-side-menus>
+    <ion-side-menus ng-controller="NavCtrl" ng-show="login">
         <!-- Center content -->
-        <ion-side-menu-content ng-controller="NavCtrl">
+        <ion-side-menu-content>
             
             <ion-nav-bar class="bar-dark">
                 
@@ -80,11 +89,12 @@
             </ion-tab>
 
 
-
-            <!-- Camera Tab -->
+<!--
+             Camera Tab 
                 <ion-tab class="center-tab camera" title="" icon-off="" icon-on="" href="#/search" >
                     <ion-nav-view name="search"></ion-nav-view>
-                </ion-tab>
+                </ion-tab> 
+            -->
 
             
           <!-- Coupons Tab -->
@@ -99,15 +109,18 @@
         </ion-side-menu-content>
         <!-- Left menu -->
         <ion-side-menu side="left">
-            <ion-header-bar class="bar-dark">
+            <ion-header-bar class="settings bar-dark">
                 <h1 class="title">Settings</h1>
             </ion-header-bar>
             <ion-content>
-                <ul class="list">
+                <ul class="list" ng-controller="NavCtrl">
                     <!-- Note each link has the 'menu-close' attribute so the menu auto closes when clicking on one of these links -->
-                    <a href="#/location" class="item" menu-close>Location</a>
+                    <a ng-show="user.profileid" href="" ng-click="" class="item" menu-close>Business profile</a>
+                    <a ng-show="!user.profileid" href="" ng-click="" class="item" menu-close>Get business profile</a>
                     <a href="#/account" class="item" menu-close>Account</a>
                     <a href="#/settings" class="item" menu-close>Settings</a>
+                    <a href="" ng-click="logout()" class="item" menu-close>Logout</a>
+                    
                 </ul>
             </ion-content>
         </ion-side-menu>
@@ -121,4 +134,6 @@
     -->
 
   </body>
+
+  
 </html>

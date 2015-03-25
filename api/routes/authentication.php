@@ -12,7 +12,3 @@ $app->get('/logout', function () use ($app){
 });
 
 
-$app->post('/register', function () use ($app){
-    $controller = new authenticationController($app);
-    $controller->register();
-});

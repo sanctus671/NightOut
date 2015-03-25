@@ -1,0 +1,32 @@
+<ion-view title="login" class="login">
+    
+  <ion-content class="center">
+      
+      <form ng-submit="login()">
+          <img src="img/logo.png" style="width:100%;max-width: 500px;margin: 0 auto;display: table;"/>
+<div class="list">
+  <label class="item item-input item-floating-label">
+    <span class="input-label" >Username</span>
+    <i class="icon ion-ios7-person placeholder-icon"></i>
+    <input type="text" ng-model="user.username" placeholder="Username" required>
+  </label>
+   
+  <label class="item item-input item-floating-label">
+      <span class="input-label">{{login.success}}</span>
+      <i class="icon ion-ios7-locked placeholder-icon"></i>
+    <input type="password" ng-model="user.password" placeholder="Password" required>
+  </label>
+
+</div>
+<div class="padding" style="text-align: center;padding-right: 50px;  padding-left: 50px;">
+    <div class="error">{{login.error}}</div>
+        <button type="submit" class="button button-block button-light">Login</button>
+        <a href="" ng-click="modal.show()" style="color:white;text-align:center;padding-top:10px;">Register</a>
+      </div>  
+      
+      </form>
+      
+      
+  </ion-content>
+
+</ion-view>

@@ -36,6 +36,19 @@ $app->add(new \Slim\Middleware\SessionCookie(array(
 
 $log = $app->log;
 
+$params = (object)json_decode($app->request()->getBody(),true);
 
+if ($app->request->isPost()){
+    $app->request->post = $params;
+}
+else if ($app->request->isPut()){
+    $app->request->put = $params;
+}
+else if ($app->request->isGet()){
+    $app->request->get = $params;
+}
+else if ($app->request->isDelete()){
+    $app->request->delete = $params;
+}
 //FacebookSession::setDefaultApplication('414561158706027', '15dde6a83e93d1f1716056ebc4485ccf');
 

@@ -24,7 +24,8 @@ class userModel
     public function save($password)
     {
         //need to manually set password when saving. set and unset dummy userid set to bypass authentication
-        if (!isset($this->username) || !isset($this->email) || !isset($password) ){$this->app->errorJSON($this->app, "Required fields were not set");}
+        //print_r(json_decode($this->app->request->getBody()));
+        if (!isset($this->username) || !isset($this->email) || !isset($password) ){session_unset(); $this->app->errorJSON($this->app, "Required fields were not sets");}
        
         unset($this->id);
         session_unset();
@@ -60,12 +61,13 @@ class userModel
     
     public function get()
     {
-        if (!isset($this->id)){$this->app->errorJSON($this->app, "No ID was selected to get");}
-        
+        //if (!isset($this->id)){$this->app->errorJSON($this->app, "No ID was selected to get");}
+        $this->id = $_SESSION['userid'];
         $fields = array_keys($this->toArray());
         unset($fields[array_search('password', $fields)]); //don't return the password!
-        
-        return $this->app->db->select("users", $fields, ["id" => $this->id]); 
+
+        return $this->app->db->query("SELECT users." . implode(",users.",$fields) . ",profiles.id AS profileid "
+                                     . "FROM users LEFT JOIN profiles ON users.id = profiles.userid WHERE users.id = $this->id")->fetchAll(); 
     } 
     
     public function authenticate($password)

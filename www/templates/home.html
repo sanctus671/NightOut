@@ -1,9 +1,27 @@
 <ion-view view-title="<img src='img/logo.png' style='width:120px;'>">
     
   <ion-content>
+   <ion-item ng-show="user.profileid" class="list card" type="item-text-wrap" >
+<div class="item item-divider">
+    Create new feed
+  </div>     
+    <div class="item item-body">
+        <a href="" ng-click="takePicture()" ng-show="imgURI === undefined"><span class="ion-image newfeed"></span></a>
+        <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
+        <label class="item item-input item-floating-label">
+            <span class="input-label">Description</span>
+            <textarea class="msd-elastic" placeholder="Description" ng-model="newFeed.description"></textarea>
+        </label>
+    </div>
+
+    </ion-item>   
+      
+      
+      
       <ion-refresher on-refresh="refresh()"></ion-refresher>
     <ion-list>
-      <ion-item class="list card" ng-repeat="item in feed" type="item-text-wrap" onclick="turnOnCamera();" href="#profile/{{item.id}}">
+      <div class="nothing" ng-show="!feed">Nothing going on in your area</div>
+      <ion-item class="list card" ng-repeat="item in feed" type="item-text-wrap" href="#profile/{{item.id}}">
 
 
   <div class="item item-avatar">
@@ -40,14 +58,11 @@
     </a>
   </div>
 
-
+      </ion-item>
     </ion-list>
   </ion-content>
 </ion-view>
 
-<script>
-    $('.camera').hide();
-    $('.search').show();
-</script>
+
 
 

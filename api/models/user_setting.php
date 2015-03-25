@@ -28,22 +28,22 @@ class userSettingsModel
     
     public function update()
     {
-        if (!isset($this->id)){$this->app->errorJSON($this->app, "No ID was selected to update");}
-        $this->app->db->update("user_settings", $this->toArray(), ["id" => $this->id]);  
+        if (!isset($this->userid)){$this->app->errorJSON($this->app, "No ID was selected to update");}
+        $this->app->db->update("user_settings", $this->toArray(), ["userid" => $this->userid]);  
     }    
     
     
     public function delete()
     {
-        if (!isset($this->id)){$this->app->errorJSON($this->app, "No ID was selected to delete");}
-        $this->app->db->delete("user_settings", ["id" => $this->id]);
+        if (!isset($this->userid)){$this->app->errorJSON($this->app, "No ID was selected to delete");}
+        $this->app->db->delete("user_settings", ["userid" => $this->userid]);
  
     }    
     
     public function get()
     {
-        if (!isset($this->id)){$this->app->errorJSON($this->app, "No ID was selected to get");}
-        return $this->app->db->select("user_settings", "*", ["id" => $this->id]); 
+        if (!isset($this->userid)){$this->app->errorJSON($this->app, "No ID was selected to get");}
+        return $this->app->db->select("user_settings", "*", ["userid" => $this->userid]); 
     } 
     
     public function toArray(){

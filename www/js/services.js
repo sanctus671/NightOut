@@ -1,4 +1,91 @@
-angular.module('starter.services', [])
+angular.module('main.services', [])
+
+
+.service('authenticate', function authenticate($http, $q, $rootScope){
+    var authenticate = this;
+    authenticate.user = {};
+    
+    authenticate.login = function(username, password){
+        var defer = $q.defer();
+        
+        $http.get($rootScope.endPoint + "/login/" + username + "/" + password)
+        .success(function(response){
+            authenticate.user = response;
+            defer.resolve(response);
+        })
+        .error(function(error,status){
+            defer.reject(error);
+        });
+        
+        return defer.promise;
+    };
+    
+    
+    authenticate.logout= function(){
+        var defer = $q.defer();
+        
+        $http.get($rootScope.endPoint + "/logout")
+        .success(function(response){
+            authenticate.user = {};
+            defer.resolve(response);
+        })
+        .error(function(error,status){
+            defer.reject(error);
+        });
+        
+        return defer.promise;
+    }; 
+    
+
+    
+    
+})
+
+
+.service('user', function authenticate($http, $q, $rootScope){
+    
+    var user = this;
+    user.user = {};
+    
+    user.register = function(newUser){
+        console.log(newUser);
+        var defer = $q.defer();
+        
+        $http.post($rootScope.endPoint + "/user",newUser)
+        .success(function(response){
+            user.user = response;
+            defer.resolve(response);
+        })
+        .error(function(error,status){
+            defer.reject(error);
+        });
+        
+        return defer.promise;
+    };
+    
+    user.get = function(){
+        var defer = $q.defer();
+        
+        $http.get($rootScope.endPoint + "/user")
+        .success(function(response){
+            user.user = response;
+            defer.resolve(response);
+        })
+        .error(function(error,status){
+            defer.reject(error);
+        });
+        
+        return defer.promise;
+    };   
+    
+    
+
+    
+    
+})
+
+
+
 
 .factory('feed', function() {
   // Might use a resource here that returns a JSON array

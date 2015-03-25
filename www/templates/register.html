@@ -1,0 +1,37 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-dark">
+        <h1 class="title">Register</h1>
+        <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>
+    </ion-header-bar>
+    <ion-content padding="true" style="padding:10px;">
+ <form ng-submit="register(modal)">   
+<div class="list">
+  <label class="item item-input item-floating-label">
+    <span class="input-label">Username</span>
+    <i class="icon ion-ios7-person placeholder-icon"></i>
+    <input type="text" ng-model="newUser.username" placeholder="Username" required>
+  </label>
+  <label class="item item-input item-floating-label">
+    <span class="input-label">Email</span>
+    <i class="icon ion-ios7-email placeholder-icon"></i>
+    <input type="email" ng-model="newUser.email" placeholder="Email" required>
+  </label>    
+  <label class="item item-input item-floating-label">
+    <span class="input-label">Password</span>
+    <i class="icon ion-ios7-locked placeholder-icon"></i>
+    <input type="password" ng-model="newUser.password" placeholder="Password" required>
+  </label>
+  <label class="item item-input item-floating-label">
+    <span class="input-label">Repeat Password</span>
+    <i class="icon ion-ios7-locked placeholder-icon"></i>
+    <input type="password" ng-model="newUser.password2" placeholder="Repeat Password" required>
+  </label>
+</div>
+<div class="padding" style="text-align: center;">
+    <div class="error">{{register.error}}</div>
+        <button class="button button-block button-dark">Register</button>
+      </div>  
+     
+ </form>
+    </ion-content>
+</ion-modal-view>
