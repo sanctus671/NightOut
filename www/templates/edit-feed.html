@@ -1,0 +1,26 @@
+
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-dark">
+        <h1 class="title">Edit feed</h1>
+        <div class="button button-clear" ng-click="editModal.hide()"><span class="icon ion-close"></span></div>
+    </ion-header-bar>
+    <ion-content padding="true" style="padding:10px;">
+   <ion-item ng-show="user.profileid" class="list card new-feed" type="item-text-wrap" >
+        <form ng-submit="addFeed()">
+            <div class="item item-body">
+        
+                <a href="" ng-click="takePicture()" ng-show="feed.image === '' "><div class="dot-border"><span class="ion-image newfeed animated pulse"></span></div></a>
+                <img class="full-image" ng-show="feed.image !== undefined" ng-src="{{feed.image}}">
+                <input type="text" ng-model="feed.image" style="display:none;">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Description</span>
+                    <textarea class="msd-elastic" placeholder="Description" ng-model="feed.text"></textarea>
+                </label>
+        
+            </div>
+       
+            <button ng-click="saveFeed()" type="submit" class="button button-block button-dark">Save</button>
+        </form>
+    </ion-item> 
+    </ion-content>
+</ion-modal-view>

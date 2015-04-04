@@ -1,54 +1,75 @@
 <ion-view view-title="<img src='img/logo.png' style='width:120px;'>">
     
   <ion-content>
-   <ion-item ng-show="user.profileid" class="list card" type="item-text-wrap" >
+   <ion-item ng-show="user.profileid" class="list card new-feed" type="item-text-wrap" >
 <div class="item item-divider">
     Create new feed
-  </div>     
-    <div class="item item-body">
-        <a href="" ng-click="takePicture()" ng-show="imgURI === undefined"><span class="ion-image newfeed"></span></a>
-        <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
-        <label class="item item-input item-floating-label">
-            <span class="input-label">Description</span>
-            <textarea class="msd-elastic" placeholder="Description" ng-model="newFeed.description"></textarea>
-        </label>
-    </div>
-
+  </div>  
+        <form ng-submit="addFeed()">
+            <div class="item item-body">
+        
+                <a href="" ng-click="takePicture()" ng-show="newFeed.image === '' "><div class="dot-border"><span class="ion-image newfeed animated pulse"></span></div></a>
+                <img class="full-image" ng-show="newFeed.image !== undefined" ng-src="{{newFeed.image}}">
+                <input type="text" ng-model="newFeed.image" style="display:none;">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Description</span>
+                    <textarea class="msd-elastic" placeholder="Description" ng-model="newFeed.text"></textarea>
+                </label>
+        
+            </div>
+       
+            <button type="submit" class="button button-block button-dark">Create</button>
+        </form>
     </ion-item>   
       
       
       
       <ion-refresher on-refresh="refresh()"></ion-refresher>
     <ion-list>
-      <div class="nothing" ng-show="!feed">Nothing going on in your area</div>
-      <ion-item class="list card" ng-repeat="item in feed" type="item-text-wrap" href="#profile/{{item.id}}">
+      <div class="nothing" ng-show="!feeds">Nothing going on in your area</div>
+      <ion-item class="list card" ng-repeat="item in feeds" type="item-text-wrap" href="#">
 
-
-  <div class="item item-avatar">
-    <img src="{{item.face}}">
-    <h2>{{item.name}}</h2>
-    <p>{{item.lastText}}</p>
+      
+          
+     <button ng-show="item.profileid === user.profileid;" ng-click="showDropdown = !showDropdown" class="button icon ion-gear-a feed-settings "></button>     
+     <ul class="dropdown hidden" ng-class="{ 'hidden': ! showDropdown }">
+         <li><a ng-controller="feedCtrl" href="" ng-click="editModal.show(); getFeed(item.id)">Edit</a></li>
+         <li><a ng-controller="feedCtrl" href="" ng-click="deleteModal.show(); getFeed(item.id)">Delete</a></li>
+         
+     </ul>
+  <div class="item item-avatar" style="border-top: none;">
+    
+      <img src="{{item.avatar}}" alt="{{item.name}}'s avatar">
+    <a href="#/profile/{{item.profileid}}" ><h2>{{item.name}}</h2></a>
+    <p><time ng-show="!showFullTime" ng-click="showFullTime = !showFullTime" title="{{ item.created_date | amDateFormat: 'dddd, MMMM Do YYYY, h:mm a' }}" am-time-ago="item.created_date"></time><span ng-click="showFullTime = !showFullTime" ng-show="showFullTime">{{ item.created_date | amDateFormat: 'dddd, MMMM Do YYYY, h:mm a' }}</span></p>
+    
   </div>
 
   <div class="item item-body">
-    <img class="full-image" src="{{item.face}}">
+    <div class="full-image">
+    <img ng-show="item.image !== ''" class="full-image" src="{{item.image}}">
+    </div>
     <p>
-      This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
-      the content is from a card-body consisting of an image and paragraph text. The footer
-      consists of tabs, icons aligned left, within the card-footer.
+      {{item.text}}
     </p>
     <p>
-      <a href="#" class="subdued">1 Like</a>
-      <a href="#" class="subdued">5 Comments</a>
+      <a href="" ng-show="!item.liked" ng-click="likeFeed(item.id)" class="subdued">{{item.likes.length}} Like<span ng-show="item.likes.length !== 1">s</span></a>
+      <a href="" ng-show="item.liked" ng-click="unlikeFeed(item.id)" class="subdued" style="color:#ccc;">{{item.likes.length}} Like<span ng-show="item.likes.length !== 1">s</span></a>
+      <a ng-controller="feedCtrl"  href="" ng-click="commentModal.show(); getFeed(item.id)" class="subdued">{{item.comments.length}} Comments</a>
     </p>
   </div>
 
   <div class="item tabs tabs-secondary tabs-icon-left">
-    <a class="tab-item" href="#">
+      
+    <a class="tab-item" href="" ng-show="!item.liked" ng-click="likeFeed(item.id)">
       <i class="icon ion-thumbsup"></i>
       Like
     </a>
-    <a class="tab-item" href="#">
+    <a class="tab-item" href="" ng-show="item.liked" ng-click="unlikeFeed(item.id)" style="color:#ccc;">
+      <i class="icon ion-thumbsup"></i>
+      Liked
+    </a>      
+    <a ng-controller="feedCtrl"  class="tab-item" href="" ng-click="commentModal.show();getFeed(item.id)">
       <i class="icon ion-chatbox"></i>
       Comment
     </a>

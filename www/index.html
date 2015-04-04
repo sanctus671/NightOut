@@ -17,6 +17,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
     <!-- custom directives --> 
+    <!-- load momentJS (required for angular-moment) -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+
+    <!-- load angular-moment -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.9.0/angular-moment.min.js"></script>    
     <script src="lib/directives/elastic.js"></script>
     <script src="lib/directives/ng-cordova.min.js"></script>
     
@@ -41,7 +46,7 @@
         <!-- Center content -->
         <ion-side-menu-content>
             
-            <ion-nav-bar class="bar-dark">
+            <ion-nav-bar class="bar-dark main-header">
                 
                 
                 <ion-nav-back-button>
@@ -56,7 +61,7 @@
                 
                 
                 <ion-nav-buttons side="right" >
-                    <button ng-controller="ModalCtrl" class="button button-icon button-clear uber-icon" ng-click="modal.show()" style="margin-top: 2px;">
+                    <button ng-controller="PurchaseCtrl" class="button button-icon button-clear uber-icon" ng-click="modal.show()" style="margin-top: 2px;">
                     </button>
                 </ion-nav-buttons>  
                 
@@ -115,7 +120,7 @@
             <ion-content>
                 <ul class="list" ng-controller="NavCtrl">
                     <!-- Note each link has the 'menu-close' attribute so the menu auto closes when clicking on one of these links -->
-                    <a ng-show="user.profileid" href="" ng-click="" class="item" menu-close>Business profile</a>
+                    <a ng-show="user.profileid" href="#/profile/{{user.profileid}}" ng-click="" class="item" menu-close>Business profile</a>
                     <a ng-show="!user.profileid" href="" ng-click="" class="item" menu-close>Get business profile</a>
                     <a href="#/account" class="item" menu-close>Account</a>
                     <a href="#/settings" class="item" menu-close>Settings</a>

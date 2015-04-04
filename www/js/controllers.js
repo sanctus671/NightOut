@@ -7,7 +7,7 @@ angular.module('main.controllers', [])
         $scope.user = {
             'username' : '',
             'password' : ''
-        }
+        };
         $scope.login.error = '';
         
         //$scope.login('onlytocheckif', 'userisalreadyloggedin');
@@ -90,7 +90,81 @@ angular.module('main.controllers', [])
   
 
   
-.controller('HomeCtrl', function($scope, $cordovaCamera, feed) {
+.controller('HomeCtrl', function($scope, $cordovaCamera, $rootScope, $ionicModal, feed) {
+    
+    $scope.init = function(){
+        $scope.feeds = [];
+        feed.all().then(
+                function(response){
+                    $scope.feeds = response.data;
+                    for (var index in $scope.feeds){
+                        for (var index2 in $scope.feeds[index]["likes"]){
+  
+                            if ($scope.feeds[index]["likes"][index2]["userid"] === $scope.user.id){
+                                $scope.feeds[index]["liked"] = true;
+                            }
+                        }
+                    }
+                    
+            });        
+        $scope.newFeed = {
+            text: "",
+            image: ""
+        };
+    };
+
+        
+    $rootScope.$on('userRetrieved', function(event, args) {
+        $scope.user = args;
+    });      
+    
+    $rootScope.$on("feedsChanged", function(event, args) {
+        $scope.refresh();
+    });          
+        
+
+    $scope.refresh = function(){
+        feed.all().then(
+            function(response){
+                $scope.feeds = response.data;
+                for (var index in $scope.feeds){
+                    for (var index2 in $scope.feeds[index]["likes"]){
+                        if ($scope.feeds[index]["likes"][index2]["userid"] === $scope.user.id){
+                            $scope.feeds[index]["liked"] = true;
+                        }
+                    }
+                }                
+        });
+
+        //$scope.feed = feed.all();
+        $scope.$broadcast("scroll.refreshComplete");
+    };    
+
+    $scope.addFeed = function(){
+        feed.insert($scope.newFeed).then(
+            function(response){
+                $scope.refresh();
+        });
+    };    
+    
+    
+    $scope.likeFeed = function(id){
+        feed.like(id).then(
+            function(response){
+                $scope.refresh();
+        });
+    };
+    
+    $scope.unlikeFeed = function(id){
+        feed.unlike(id).then(
+            function(response){
+                $scope.refresh();
+        });
+    };   
+    
+    
+    
+    
     $scope.takePicture = function(){
 
         var options = {
@@ -106,46 +180,177 @@ angular.module('main.controllers', [])
         };
 
         $cordovaCamera.getPicture(options).then(function(imageData) {
-          $scope.imgURI = "data:image/jpeg;base64," + imageData;
+          $scope.newFeed.image = "data:image/jpeg;base64," + imageData;
         }, function(err) {
           // error
         });
 
       }
       
-      
-    $scope.feed = feed.all();
+
     
-    $scope.refresh = function(){
-        feed.insert({
-            name: 'New insert',
-            lastText: 'Look at my mukluks!',
-            face: 'https://pbs.twimg.com/profile_images/491995398135767040/ie2Z_V6e.jpeg'            
-        });
-        $scope.feed = feed.all();
-        $scope.$broadcast("scroll.refreshComplete")
-    }
-    
-    $scope.$on('userRetrieved', function(event, args) {
-        $scope.user = args;
-    });  
+    $scope.init();
     
     
       
     
 })
 
+.controller('feedCtrl', function($scope, $ionicModal, $rootScope, feed) {
+    // Load the modal from the given template URL
+    
+    $scope.init = function(){
+        $scope.feed = [];
+        $scope.newComment = {
+            feedid:"",
+            comment:""
+        };
+        $scope.showComment = true;
+    }
+    
+    $ionicModal.fromTemplateUrl('templates/comment.html', function($ionicModal) {
+        $scope.commentModal = $ionicModal;
+    }, {
+        // Use our scope for the scope of the modal to keep it simple
+        scope: $scope,
+        // The animation we want to use for the modal entrance
+        animation: 'slide-in-up'
+    }); 
+    
+    $ionicModal.fromTemplateUrl('templates/edit-feed.html', function($ionicModal) {
+        $scope.editModal = $ionicModal;
+    }, {
+        // Use our scope for the scope of the modal to keep it simple
+        scope: $scope,
+        // The animation we want to use for the modal entrance
+        animation: 'slide-in-up'
+    });  
+    
+    $ionicModal.fromTemplateUrl('templates/delete-feed.html', function($ionicModal) {
+        $scope.deleteModal = $ionicModal;
+    }, {
+        // Use our scope for the scope of the modal to keep it simple
+        scope: $scope,
+        // The animation we want to use for the modal entrance
+        animation: 'slide-in-up'
+    });  
+    
+    
+    $scope.getFeed = function(id){
+        feed.get(id).then(
+            function(response){
+                $scope.feed = response.data;
+                for (var index in $scope.feed["likes"]){
+                    if ($scope.feed["likes"][index]["userid"] === $scope.user.id){
+                        $scope.feed["liked"] = true;
+                    }
+                }
+                $scope.newComment.feedid = $scope.feed.id;
+            }); 
+            
+    }
+    
+    $scope.saveFeed = function(){
+        feed.update($scope.feed).then(
+            function(response){
+                $scope.editModal.hide();
+            });         
+    } 
+    
+    $scope.deleteFeed = function(id){
+        feed.remove($scope.feed.id).then(
+            function(response){
+                $scope.deleteModal.hide();
+            });         
+    }  
+    
+    $scope.saveComment = function(){
+        feed.insertComment($scope.newComment).then(
+            function(response){
+                $scope.refresh();
+                //$rootScope.$broadcast("feedsChanged");
+                $scope.newComment.comment = "";                
+                
+
+            });         
+    } 
+    
+    $scope.updateComment = function(comment){
+        feed.updateComment(comment).then(
+            function(response){
+                $scope.refresh();              
+                
+
+            });         
+    }   
+    $scope.deleteComment = function(id){
+        feed.removeComment(id).then(
+            function(response){
+                $scope.refresh();              
+                
+
+            });         
+    }    
+    $rootScope.$on('userRetrieved', function(event, args) {
+        $scope.user = args;
+    });     
+    
+    $scope.$on('modal.hidden', function(event, args) {
+        $rootScope.$broadcast("feedsChanged");
+    });     
+    
+    
+    $scope.refresh = function(){
+        feed.get($scope.feed.id).then(
+            function(response){
+                $scope.feed = response.data;
+                for (var index in $scope.feed["likes"]){
+                    if ($scope.feed["likes"][index]["userid"] === $scope.user.id){
+                        $scope.feed["liked"] = true;
+                    }
+                }
+            });       
+            $scope.$broadcast("scroll.refreshComplete");
+    };
+    
+    
+    
+    $scope.init();
+  })
+
+
+
 .controller('SearchCtrl', function($scope) {
   
   $scope.settings = {
     enableFriends: true
-  }
+  };
   }) 
   
   
-.controller('ProfileCtrl', function($scope, $stateParams, feed) {
-   
-  $scope.chat = feed.get($stateParams.chatId);
+.controller('ProfileCtrl', function($scope, $stateParams, profile) {
+    
+    
+    $scope.init = function(){
+        $scope.profile = [];
+        profile.get($stateParams.profileId).then(
+            function(response){
+                $scope.profile = response.data;
+                console.log($scope.profile);
+            });        
+    }
+    
+    
+    $scope.refresh = function(){
+        profile.get($stateParams.profileId).then(
+            function(response){
+                $scope.profile = response.data;
+                $scope.$broadcast("scroll.refreshComplete");
+            });       
+            
+    };
+    
+    $scope.init();
   
 })
 
@@ -189,7 +394,7 @@ angular.module('main.controllers', [])
   }
   })
   
-.controller('ModalCtrl', function($scope, $ionicModal) {
+.controller('PurchaseCtrl', function($scope, $ionicModal) {
     // Load the modal from the given template URL
     $ionicModal.fromTemplateUrl('templates/purchase.html', function($ionicModal) {
         $scope.modal = $ionicModal;
@@ -210,6 +415,7 @@ angular.module('main.controllers', [])
         if ($location.path() !== "login"){$scope.login = true;}
         
         $scope.user = {
+            'id' : '',
             'username':'',
             'email' : '',
             'password' : '',

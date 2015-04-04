@@ -30,7 +30,7 @@ class feedCommentModel
     public function update()
     {
         if (!isset($this->id)){$this->app->errorJSON($this->app, "No ID was selected to update");}
-        $this->app->db->update("feed_comments", $this->toArray(), ["id" => $this->id]);
+        $this->app->db->update("feed_comments", ["comment" => $this->comment], ["id" => $this->id]);
     }    
     
     
@@ -44,7 +44,7 @@ class feedCommentModel
     public function get()
     {
         if (!isset($this->id)){$this->app->errorJSON($this->app, "No ID was selected to get");}
-        return $this->app->db->select("feed_comments", "*", ["id" => $this->id]); 
+        return $this->app->db->query("SELECT feed_comments.*, users.username FROM feed_comments INNER JOIN users ON feed_comments.userid = users.id WHERE id= $this->id")->fetchAll(); 
     } 
     
     public function toArray(){

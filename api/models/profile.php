@@ -61,15 +61,12 @@ class profileModel
     
     public function get()
     {
-        if (isset($this->userid)){
-            return $this->app->db->select("profiles", "*", ["userid" => $this->userid]);
-        }
-        else if (!isset($this->id)){
+        if (!isset($this->id)){
             return $this->app->db->select("profiles", "*");
             
         }
         else {
-            return $this->app->db->select("profiles", "*", ["id" => $this->id]);
+            return $this->app->db->select("profiles", "*", ["id" => $this->id])[0];
         }
 
     } 

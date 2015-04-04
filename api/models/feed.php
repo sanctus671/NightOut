@@ -61,10 +61,37 @@ class feedModel
     {
         if (!isset($this->id)){
             //select all
-            return $this->app->db->select("feeds", "*"); 
+
+            $feeds = $this->app->db->query("SELECT feeds.*, profiles.avatar, profiles.name, profiles.type FROM feeds "
+                                     . "INNER JOIN profiles ON feeds.profileid = profiles.id ORDER BY feeds.created_date DESC LIMIT 5 OFFSET 0 ")->fetchAll(); 
+            foreach ($feeds as $index => $feed){
+                $feeds[$index]["comments"] = $this->app->db->query("SELECT * FROM feed_comments "
+                                     . "INNER JOIN users ON users.id = feed_comments.userid "
+                                     . "WHERE feed_comments.feedid = " . $feed["id"])->fetchAll(); 
+                
+
+                $feeds[$index]["likes"] = $this->app->db->query("SELECT * FROM feed_likes "
+                                     . "INNER JOIN users ON users.id = feed_likes.userid WHERE feed_likes.feedid = " . $feed["id"])->fetchAll(); 
+            }
+            return $feeds;
+            
         }
         //select specific item
-        return $this->app->db->select("feeds", "*", ["id" => $this->id]); 
+        $feed = $this->app->db->select("feeds", "*", ["id" => $this->id])[0];
+        $feed["comments"] = $this->app->db->query("SELECT feed_comments.*, users.username FROM feed_comments "
+                             . "INNER JOIN users ON users.id = feed_comments.userid "
+                             . "WHERE feed_comments.feedid = " . $feed["id"])->fetchAll(); 
+
+
+        $feed["likes"] = $this->app->db->query("SELECT feed_likes.*, users.username FROM feed_likes "
+                             . "INNER JOIN users ON users.id = feed_likes.userid WHERE feed_likes.feedid = " . $feed["id"])->fetchAll(); 
+        
+        return $feed;
+               
+            
+            
+            
+            ; 
         
 
     } 

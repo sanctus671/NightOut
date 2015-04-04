@@ -1,0 +1,11 @@
+
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-dark">
+        <h1 class="title">Delete feed</h1>
+        <div class="button button-clear" ng-click="deleteModal.hide()"><span class="icon ion-close"></span></div>
+    </ion-header-bar>
+    <ion-content padding="true" style="padding:10px;">
+      Are you sure you want to delete this feed?
+      <button ng-click="deleteFeed()" type="submit" class="button button-block button-dark">Yes</button>
+    </ion-content>
+</ion-modal-view>

@@ -1,0 +1,47 @@
+
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-dark">
+        <h1 class="title">Comments</h1>
+        <div class="button button-clear" ng-click="commentModal.hide()"><span class="icon ion-close"></span></div>
+    </ion-header-bar>
+    <ion-content padding="true" style="padding:10px;">
+        <ion-refresher on-refresh="refresh()"></ion-refresher>
+        {{feed.likes.length}} <span ng-show="feed.likes.length !== 1">people</span><span ng-show="feed.likes.length === 1">person</span> liked this
+      <ion-item class="list card" ng-repeat="comment in feed.comments" type="item-text-wrap" href="#">
+        <button ng-show="user.id === comment.userid" ng-click="showDropdown = !showDropdown" class="button icon ion-gear-a feed-settings "></button>     
+        <ul class="dropdown hidden" ng-class="{ 'hidden': ! showDropdown }">
+            <li><a href="" ng-click="showEdit = !showEdit;showComment = false; showDelete = false; showDropdown = false;">Edit</a></li>
+            <li><a href="" ng-click="showDelete = !showDelete;showComment = false;showEdit = false; showDropdown = false;">Delete</a></li>
+
+        </ul> 
+
+   <div class="item" style="border-top: none;">
+    <h2>{{comment.username}}</h2> - <time title="{{ comment.created_date | amDateFormat: 'dddd, MMMM Do YYYY, h:mm a' }}" am-time-ago="comment.created_date"></time>
+    
+  </div>    
+          <div ng-show="showComment" class="main-comment">{{comment.comment}}</div>
+          <div class="edit-comment" ng-show="showEdit" >
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Comment</span>
+                <textarea class="msd-elastic" placeholder="Comment" ng-model="comment.comment"></textarea>
+            </label>  
+           <button ng-click="updateComment(comment)" type="submit" class="button button-block button-dark">Save</button>
+           <button ng-click="showEdit = !showEdit;  showComment = true;" type="submit" class="button button-block button-dark">Cancel</button>
+          </div>
+          <div class="delete-comment" ng-show="showDelete" >Are you sure you want to delete this comment?
+            <button ng-click="deleteComment(comment.id)" type="submit" class="button button-block button-dark">Delete</button>
+            <button ng-click="showDelete = !showDelete; showComment = true;" type="submit" class="button button-block button-dark">Cancel</button>
+          </div>  
+          
+      </ion-item>
+      <ion-item class="list card" type="item-text-wrap">
+        <label class="item item-input item-floating-label">
+            <span class="input-label">Comment</span>
+            <textarea class="msd-elastic" placeholder="Comment" ng-model="newComment.comment"></textarea>
+        </label>
+        <button ng-click="saveComment()" type="submit" class="button button-block button-dark">Save</button>
+      </ion-item>        
+        
+        
+    </ion-content>
+</ion-modal-view>

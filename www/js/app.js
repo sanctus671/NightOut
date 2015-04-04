@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('main', ['ionic', 'main.controllers', 'main.services', 'monospaced.elastic', 'ngCordova'])
+angular.module('main', ['ionic', 'main.controllers', 'main.services', 'angularMoment', 'monospaced.elastic', 'ngCordova'])
 
 .run(function($ionicPlatform, $rootScope) {
   $rootScope.endPoint = 'http://nightout.local/api/index.php';    
