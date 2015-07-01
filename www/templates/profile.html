@@ -4,12 +4,226 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-<ion-view view-title="{{profile.name}}">
+<ion-view view-title="{{profile.name}}" hide-back-button="false">
+
   <ion-content class="padding">
-    {{profile.name}}
-    <p>
-      Feed, Products, Reviews
-    </p>
+      <div class="item item-avatar" style="border-top: none;">
+
+          <img src="{{profile.avatar}}" alt="{{profile.name}}'s avatar">
+        <a href="" ><h2>{{profile.name}}</h2></a>
+        <p>Show information</p>
+
+      </div>      
+    <div class="tabs profile-tabs" style="">
+        <a class="tab-item" ng-class="{'active':selectedTab === 'feed'}" ng-click="selectedTab = 'feed'" style="border-right: solid 1px #b2b2b2; ">
+            Feed
+        </a>
+        <a class="tab-item" ng-class="{'active':selectedTab === 'products'}" ng-click="selectedTab = 'products'">
+            Products
+        </a>
+        <a class="tab-item" ng-class="{'active':selectedTab === 'reviews'}" ng-click="selectedTab = 'reviews'" style="border-left: solid 1px #b2b2b2;">
+            Reviews
+        </a>
+    </div>
+      
+      
+        
+      
+      
+      <ion-refresher on-refresh="refresh()"></ion-refresher>
+      <div ng-show="selectedTab === 'feed'"  >
+
+          
+          <ion-item ng-controller="HomeCtrl" ng-show="user.profileid" class="list card new-feed" type="item-text-wrap" >
+<div class="item item-divider">
+    Create new feed
+  </div>  
+        <form ng-submit="addFeed()">
+            <div class="item item-body">
+        
+                <a href="" ng-click="takePicture()" ng-show="newFeed.image === '' "><div class="dot-border"><span class="ion-image newfeed animated pulse"></span></div></a>
+                <img class="full-image" ng-show="newFeed.image !== undefined" ng-src="{{newFeed.image}}">
+                <input type="text" ng-model="newFeed.image" style="display:none;">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Description</span>
+                    <textarea class="msd-elastic" placeholder="Description" ng-model="newFeed.text"></textarea>
+                </label>
+        
+            </div>
+       
+            <button type="submit" class="button button-block button-dark">Create</button>
+        </form>
+    </ion-item>  
+
+    <ion-list>
+        <div class="nothing" ng-show="!feeds">Nothing in feed</div>
+        
+        
+        <div class="list card" ng-repeat="item in feeds" type="item-text-wrap" href="#">
+            
+            
+            <button ng-show="item.profileid === user.profileid;" ng-click="showDropdown = !showDropdown" class="button icon ion-gear-a feed-settings "></button>     
+            <ul class="dropdown hidden" ng-class="{ 'hidden': ! showDropdown }">
+                <li><a ng-controller="feedCtrl" href="" ng-click="editModal.show(); getFeed(item.id)">Edit</a></li>
+                <li><a ng-controller="feedCtrl" href="" ng-click="deleteModal.show(); getFeed(item.id)">Delete</a></li>
+            </ul>
+            
+            
+            <div class="item" style="border-top: none;">
+                <p><time ng-show="!showFullTime" ng-click="showFullTime = !showFullTime" title="{{ item.created_date | amDateFormat: 'dddd, MMMM Do YYYY, h:mm a' }}" am-time-ago="item.created_date"></time><span ng-click="showFullTime = !showFullTime" ng-show="showFullTime">{{ item.created_date | amDateFormat: 'dddd, MMMM Do YYYY, h:mm a' }}</span></p>
+
+            </div>
+            
+            
+            <div ng-show="item.image !== ''" class="item item-image">
+                <img  src="{{item.image}}" alt="Feed image">
+            </div>
+            
+            
+            <div class="item item-body">
+                <p ng-show="item.text !== ''">
+                    {{item.text}}
+                </p>
+
+                <p>
+                    <a href="" ng-show="!item.liked" ng-click="likeFeed(item.id)" class="subdued">{{item.likes.length}} Like<span ng-show="item.likes.length !== 1">s</span></a>
+                    <a href="" ng-show="item.liked" ng-click="unlikeFeed(item.id)" class="subdued" style="color:#ccc;">{{item.likes.length}} Like<span ng-show="item.likes.length !== 1">s</span></a>
+                    <a ng-controller="feedCtrl"  href="" ng-click="commentModal.show(); getFeed(item.id)" class="subdued">{{item.comments.length}} Comments</a>
+                </p>
+            </div>
+
+            <div class="item tabs tabs-secondary tabs-icon-left">
+
+            <a class="tab-item" href="" ng-show="!item.liked" ng-click="likeFeed(item.id)">
+              <i class="icon ion-thumbsup"></i>
+              Like
+            </a>
+            <a class="tab-item" href="" ng-show="item.liked" ng-click="unlikeFeed(item.id)" style="color:#ccc;">
+              <i class="icon ion-thumbsup"></i>
+              Liked
+            </a>      
+            <a ng-controller="feedCtrl"  class="tab-item" href="" ng-click="commentModal.show();getFeed(item.id)">
+              <i class="icon ion-chatbox"></i>
+              Comment
+            </a>
+            <a class="tab-item" href="#">
+              <i class="icon ion-share"></i>
+              Share
+            </a>
+            </div>
+  
+
+        </div>
+        
+        
+        
+    </ion-list>
+          
+      </div>
+      
+      <div ng-show="selectedTab === 'products'">
+          
+    <ion-item  ng-show="user.profileid" class="card new-product" type="item-text-wrap" >
+
+            <button ng-controller="ProductCtrl" class="button button-block button-dark" ng-click="newModal.show()">Create Product</button>
+         
+
+    </ion-item>            
+          
+          
+    <ion-list>
+        <div class="nothing" ng-show="!products">No products</div>          
+          
+          
+          
+          
+<div class="list card" ng-repeat="product in products">
+
+        <div class="item">
+            <p ng-show="product.name !== '' && product.price !== ''">
+                {{product.name}}<br/>
+                ${{product.price}}
+            </p>
+        </div>
+                
+          <div class="item item-image">
+            <img src="{{product.image}}">
+          </div>
+
+            <div class="item item-body">
+                
+                <p ng-show="product.description !== ''">
+                    {{product.description}}
+                </p>                
+                
+
+            </div>     
+    
+    
+            <div class="item tabs tabs-secondary tabs-icon-left">
+
+            <a ng-controller="ProductCtrl" class="tab-item" href="" ng-click="modal.show()">
+              <i class="icon ion-currency"></i>
+              Buy
+            </a>
+
+            </div>    
+
+  
+
+
+
+
+</div>
+    </ion-list>      
+      </div>
+      
+      
+      <div ng-show="selectedTab === 'reviews'">
+    <ion-item  class="card new-review" type="item-text-wrap" >
+
+            <button ng-controller="ReviewCtrl" class="button button-block button-dark" ng-click="newModal.show()">Write Review</button>
+         
+
+    </ion-item>           
+          
+          
+    <ion-list>
+        <div class="nothing" ng-show="!reviews">No reviews</div>          
+          
+          
+          
+          
+<div class="list card" ng-repeat="review in reviews">
+            <button ng-show="review.userid === user.id;" ng-click="showDropdown = !showDropdown" class="button icon ion-gear-a feed-settings "></button>     
+            <ul class="dropdown hidden" ng-class="{ 'hidden': ! showDropdown }">
+                <li><a href="" ng-click="">Edit</a></li>
+                <li><a href="" ng-click="">Delete</a></li>
+            </ul>
+            
+            
+            <div class="item" style="border-top: none;">
+                <h1>Rated: {{review.rating}}</h1>
+                <h2 >{{review.username}}</h2>
+                <p><time ng-show="!showFullTime" ng-click="showFullTime = !showFullTime" title="{{ review.created_date | amDateFormat: 'dddd, MMMM Do YYYY, h:mm a' }}" am-time-ago="review.created_date"></time><span ng-click="showFullTime = !showFullTime" ng-show="showFullTime">{{ review.created_date | amDateFormat: 'dddd, MMMM Do YYYY, h:mm a' }}</span></p>
+
+            </div>
+
+  <div class="item item-image">
+    <img src="{{review.image}}">
+  </div>
+
+    <div class="item item-body">
+        <p ng-show="review.text !== ''">
+            {{review.text}}
+        </p>
+
+    </div>
+
+</div>
+    </ion-list>     
+          
+      </div>      
   </ion-content>
 </ion-view>
 

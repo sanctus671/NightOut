@@ -62,12 +62,48 @@ class profileModel
     public function get()
     {
         if (!isset($this->id)){
-            return $this->app->db->select("profiles", "*");
+            $profiles = $this->app->db->select("profiles", "*");
+            foreach ($profiles as $index => $profile){
+                $profiles[$index]["reviews"] = $this->app->db->query("SELECT * FROM profile_reviews "
+                                     . "INNER JOIN users ON users.id = profile_reviews.userid "
+                                     . "WHERE profile_reviews.profileid = " . $profile["id"])->fetchAll(); 
+                
+
+                $profiles[$index]["products"] = $this->app->db->query("SELECT * FROM products "
+                                     . "WHERE products.profileid = " . $profile["id"])->fetchAll(); 
+            }
+            return $profiles;
             
         }
-        else {
-            return $this->app->db->select("profiles", "*", ["id" => $this->id])[0];
-        }
+        
+        
+        $profile = $this->app->db->select("profiles", "*", ["id" => $this->id])[0];
+        
+        $profile["reviews"] = $this->app->db->query("SELECT * FROM profile_reviews "
+                             . "INNER JOIN users ON users.id = profile_reviews.userid "
+                             . "WHERE profile_reviews.profileid = " . $this->id)->fetchAll(); 
+
+
+        $profile["products"] = $this->app->db->query("SELECT * FROM products "
+                             . "WHERE products.profileid = " . $this->id)->fetchAll();  
+        
+        
+        $feeds = $this->app->db->query("SELECT feeds.*, profiles.avatar, profiles.name, profiles.type FROM feeds "
+                                 . "INNER JOIN profiles ON feeds.profileid = profiles.id WHERE feeds.profileid = $this->id ORDER BY feeds.created_date DESC LIMIT 5 OFFSET 0 ")->fetchAll(); 
+        foreach ($feeds as $index => $feed){
+            $feeds[$index]["comments"] = $this->app->db->query("SELECT * FROM feed_comments "
+                                 . "INNER JOIN users ON users.id = feed_comments.userid "
+                                 . "WHERE feed_comments.feedid = " . $feed["id"])->fetchAll(); 
+
+
+            $feeds[$index]["likes"] = $this->app->db->query("SELECT * FROM feed_likes "
+                                 . "INNER JOIN users ON users.id = feed_likes.userid WHERE feed_likes.feedid = " . $feed["id"])->fetchAll(); 
+        } 
+        
+        $profile["feeds"] = $feeds;
+        
+        return $profile;
+        
 
     } 
     

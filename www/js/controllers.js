@@ -328,27 +328,100 @@ angular.module('main.controllers', [])
   }) 
   
   
-.controller('ProfileCtrl', function($scope, $stateParams, profile) {
+.controller('ProfileCtrl', function($scope, $rootScope, $stateParams, $ionicModal, profile, feed, user) {
     
     
     $scope.init = function(){
+        
+        //get profile data
         $scope.profile = [];
+        $scope.feeds = [];
+        $scope.reviews = [];
+        $scope.products = [];
+        
+        if (!$scope.user){
+            $scope.user = [];
+        }
+        
+        
+        $scope.selectedTab = 'feed';
         profile.get($stateParams.profileId).then(
             function(response){
                 $scope.profile = response.data;
                 console.log($scope.profile);
-            });        
+                $scope.feeds = $scope.profile.feeds;
+                $scope.reviews = $scope.profile.reviews;
+                $scope.products = $scope.profile.products;
+                
+                for (var index in $scope.feeds){
+                    for (var index2 in $scope.feeds[index]["likes"]){
+
+                        if ($scope.feeds[index]["likes"][index2]["userid"] === $scope.user.id){
+                            $scope.feeds[index]["liked"] = true;
+                        }
+                    }
+                }                
+            });             
+            
     }
+    
+    
+    $rootScope.$on('userRetrieved', function(event, args) {
+        
+        $scope.user = args;
+        console.log("herer");
+    });  
+    
+     
+    
+    $rootScope.$on("feedsChanged", function(event, args) {
+        $scope.refresh();
+    });    
     
     
     $scope.refresh = function(){
         profile.get($stateParams.profileId).then(
             function(response){
                 $scope.profile = response.data;
+                $scope.feeds = $scope.profile.feeds;
+                $scope.reviews = $scope.profile.reviews;
+                $scope.products = $scope.profile.products;
+                
+                for (var index in $scope.feeds){
+                    for (var index2 in $scope.feeds[index]["likes"]){
+
+                        if ($scope.feeds[index]["likes"][index2]["userid"] === $scope.user.id){
+                            $scope.feeds[index]["liked"] = true;
+                        }
+                    }
+                } 
+                
                 $scope.$broadcast("scroll.refreshComplete");
-            });       
-            
+            });         
+      
     };
+    
+
+    
+    $scope.likeFeed = function(id){
+        feed.like(id).then(
+            function(response){
+                $scope.refresh();
+        });
+    };
+    
+    $scope.unlikeFeed = function(id){
+        feed.unlike(id).then(
+            function(response){
+                $scope.refresh();
+        });
+    };   
+    
+ 
+
+        
+    
+    
     
     $scope.init();
   
@@ -394,7 +467,41 @@ angular.module('main.controllers', [])
   }
   })
   
-.controller('PurchaseCtrl', function($scope, $ionicModal) {
+  
+.controller('ReviewCtrl', function($scope, $ionicModal) {
+ 
+    
+    $ionicModal.fromTemplateUrl('templates/new-review.html', function($ionicModal) {
+        $scope.newModal = $ionicModal;
+    }, {
+        // Use our scope for the scope of the modal to keep it simple
+        scope: $scope,
+        // The animation we want to use for the modal entrance
+        animation: 'slide-in-up'
+    });    
+  })  
+  
+.controller('ProductCtrl', function($scope, $ionicModal) {
+    
+    
+    $scope.init = function(){
+        $scope.newProduct = {
+            image: '',
+            name: '',
+            description: '',
+            price: '',
+            payment_method: 'cash',
+            redemption_method: 'display'
+           
+        };
+        
+        if (!$scope.user){
+            $scope.user = [];
+        }        
+       
+    }    
+    
+    
     // Load the modal from the given template URL
     $ionicModal.fromTemplateUrl('templates/purchase.html', function($ionicModal) {
         $scope.modal = $ionicModal;
@@ -403,7 +510,23 @@ angular.module('main.controllers', [])
         scope: $scope,
         // The animation we want to use for the modal entrance
         animation: 'slide-in-up'
-    });   
+    });  
+    
+    $ionicModal.fromTemplateUrl('templates/new-product.html', function($ionicModal) {
+        $scope.newModal = $ionicModal;
+    }, {
+        // Use our scope for the scope of the modal to keep it simple
+        scope: $scope,
+        // The animation we want to use for the modal entrance
+        animation: 'slide-in-up'
+    });  
+    
+    
+    $scope.$on('userRetrieved', function(event, args) {
+        $scope.user = args;
+    });  
+    
+    $scope.init(); 
   })
   
   

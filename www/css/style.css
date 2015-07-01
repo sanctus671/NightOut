@@ -205,6 +205,11 @@ margin-bottom:0px;
       display: inline;
 }
 
+.item-checkbox input[type="checkbox"]{
+    display:block;
+    
+}
+
 .login .item{
   border: none;
   border-bottom: 1px solid white;    
@@ -317,5 +322,37 @@ margin-bottom:0px;
     padding:0;
     border-color:white;
     box-shadow:none;
+}
+
+.profile-tabs{
+    position: relative;  border-bottom-width: 1px;
+    background-color:white;
+}
+
+.profile-tabs .tab-item.active{
+    background-color:black;
+    color:white;
+    transition: all 1s ease;
+}
+
+.checkbox-list{
+    
+    margin:0px; padding:20px 0;
+}
+
+.checkbox-list .input-label{
+  padding-left: 15px;
+  padding-bottom: 15px;
+  color: #aaa;
+}
+
+.checkbox-label{
+    max-width:none;
+    width:100%;
+}
+
+.text-area-padding{
+    padding-bottom:15px;
+    
 }
 

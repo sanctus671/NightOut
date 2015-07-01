@@ -88,8 +88,6 @@ angular.module('main.services', [])
 
 
 .factory('feed', function($rootScope, $q, $http) {
- 
-  var data = [];  
   return {
     all: function(){
         var defer = $q.defer();
@@ -144,8 +142,7 @@ angular.module('main.services', [])
         return defer.promise;  
     },    
     updateComment: function(comment){
-      var defer = $q.defer();
-         console.log(comment);       
+      var defer = $q.defer();     
         $http.put($rootScope.endPoint + "/feed/comment/" + comment.id, comment)
         .success(function(response){
             defer.resolve(response);
@@ -246,7 +243,8 @@ angular.module('main.services', [])
         });
         
         return defer.promise;
-    } 
+    }
+    
   }
 })
 

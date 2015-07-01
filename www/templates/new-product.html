@@ -1,0 +1,91 @@
+
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-dark">
+        <h1 class="title">New product</h1>
+        <div class="button button-clear" ng-click="newModal.hide()"><span class="icon ion-close"></span></div>
+    </ion-header-bar>
+    <ion-content padding="true" style="padding:10px;">
+        <form ng-submit="addProduct()">
+            <div class="list">
+                
+                <a href="" ng-click="takePicture()" ng-show="newProduct.image === '' "><div class="dot-border"><span class="ion-image newfeed animated pulse"></span></div></a>
+                <a href="" ng-click="takePicture()" ng-show="newProduct.image !== undefined"><img class="full-image"  ng-src="{{newProduct.image}}"></a>
+                <input type="text" ng-model="newProduct.image" style="display:none;">
+                
+                
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Name</span>
+                    <input type="text" class="msd-elastic" placeholder="Name" ng-model="newProduct.name">
+                </label>
+                
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Price</span>
+                    <input type="number" class="msd-elastic" placeholder="Price" ng-model="newProduct.price">
+                </label>
+
+                <label class="item item-input item-floating-label text-area-padding">
+                    <span class="input-label">Description</span>
+                    <textarea class="msd-elastic" placeholder="Description" ng-model="newFeed.description"></textarea>
+                </label>  
+
+  
+     
+                <ul class="list checkbox-list" style="padding-bottom:0px;">
+                    <span class="input-label checkbox-label">Payment Methods</span>
+  
+                    <li class="item item-checkbox">
+                        <label class="checkbox checkbox-dark">
+                            <input type="checkbox">
+                        </label>
+                    Cash
+                    </li>  
+  
+                    <li class="item item-checkbox">
+                        <label class="checkbox checkbox-dark">
+                            <input type="checkbox" disabled>
+                        </label>
+                    Paypal
+                    </li>  
+
+                    <li class="item item-checkbox">
+                        <label class="checkbox checkbox-dark">
+                            <input type="checkbox" disabled>
+                        </label>
+                    Google Checkout
+                    </li>
+                </ul>                   
+                
+                <ul class="list checkbox-list" style="padding-top:5px;">
+                    <span class="input-label checkbox-label">Redemption Methods</span>
+  
+                    <li class="item item-checkbox">
+                        <label class="checkbox checkbox-dark">
+                            <input type="checkbox">
+                        </label>
+                    Display
+                    </li>  
+  
+                    <li class="item item-checkbox">
+                        <label class="checkbox checkbox-dark">
+                            <input type="checkbox" disabled>
+                        </label>
+                    QR Code
+                    </li>  
+
+                    <li class="item item-checkbox">
+                        <label class="checkbox checkbox-dark">
+                            <input type="checkbox" disabled>
+                        </label>
+                    iBeacon
+                    </li>
+                </ul>                
+                
+
+
+        
+            </div>
+       
+            <button type="submit" class="button button-block button-dark">Create</button>
+        </form> 
+    </ion-content>
+</ion-modal-view>
